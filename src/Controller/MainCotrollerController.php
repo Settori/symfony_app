@@ -5,23 +5,28 @@ namespace App\Controller;
 use App\Entity\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface; 
 
-class MainCotrollerController extends AbstractController
+class MainCotrollerController extends Controller
 {
     /**
      * @Route("/", name="main_cotroller")
      */
-    public function index()
+    public function index( Request $request)
     {
+        $paginator = $this->get('knp_paginator');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
-        $users = $this->getDoctrine()->getRepository(User::class)->findBy(array(), array(), 10, null);
-        return $this->render('main.html.twig', array(
-            'users' => $users
-        ));
+        //$users = $this->getDoctrine()->getRepository(User::class)->findBy(array(), array(), 10, null);
+        $users = $this->getDoctrine()->getRepository(User::class);
+        return $this->render('main.html.twig', [ 
+            'pagination' => $paginator->paginate(
+             $users->findAll(),$request->query->getInt('page', 1),10) 
+        ]);
     }
 
     /**
