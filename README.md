@@ -38,7 +38,7 @@ php bin/console doctrine:database:import project_auth.sql
 In app root directory
 
 ```bash
-php bin/console server:start
+symfony server:start
 ```
 Now you can go to the url **127.0.0.1:8000** and start using this application.
 
