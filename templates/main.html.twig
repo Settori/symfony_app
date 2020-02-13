@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Login form{% endblock %}
+{% block body %}
+
+    {% if app.user %}
+        {% if app.user.disabled == 1 %}
+            <h1>Your accout is disabled</h1>
+            <a href="{{ path('app_logout') }}" class="btn btn-sm btn-primary">Logout</a>
+        {% else %}
+            <div class="mb-3">
+                <h1 class="h3 mb-3 mt-5 font-weight-normal">You are logged in as {{ app.user.username }}</h1> <a href="{{ path('app_logout') }}" class="btn btn-sm btn-primary mb-4">Logout</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {% for us in users %}
+                    <tr>
+                        <td>{{ us.email }}</td>
+                        <td>
+                            {% if us.disabled == 0 %}
+                                <a href="/disable/{{ us.id }}" class="btn btn-dark btn-sm">Disable</a>
+                            {% else %}
+                                <a href="/activate/{{ us.id }}" class="btn btn-primary btn-sm">Activate</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    {% else %}
+        {{ render(controller('App\\Controller\\SecurityController:login')) }}
+        {{ render(controller('App\\Controller\\RegistrationController:register')) }}
+    {% endif %}
+
+{% endblock %}
