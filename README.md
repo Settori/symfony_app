@@ -42,6 +42,6 @@ php bin/console server:start
 ```
 Now you can go to the url **127.0.0.1:8000** and start using this application.
 
-Login data:
+**Login data:**
 - email: **test@test.pl**
 - password: **123456**
